@@ -1,0 +1,117 @@
+# Banking AI Analytics Platform Configuration
+# This file defines all runtime settings for the platform
+
+# Database Configuration
+database:
+  # Default to PostgreSQL; set to sqlite:///./uae_banking.db for local development
+  url: "postgresql://postgres:password@localhost:5432/uae_banking"
+  echo: false  # Set to true for SQL query logging
+  pool_size: 10
+  max_overflow: 20
+
+# Generative AI & LLM Models (HuggingFace)
+models:
+  # Text generation model for summaries
+  text_generation: "google/flan-t5-large"
+  # Embedding model for RAG vector search
+  embedding: "sentence-transformers/all-MiniLM-L6-v2"
+  # Device for inference: 'cuda' or 'cpu'
+  device: "cpu"
+  # Model precision: 'float32', 'float16', 'int8'
+  precision: "float32"
+
+# Analytics Thresholds & Parameters
+analytics:
+  # Fraud detection: Isolation Forest contamination parameter
+  fraud_isolation_forest_contamination: 0.05
+  # Credit risk: NPL prediction threshold
+  credit_risk_npl_threshold: 0.5
+  # Customer segmentation: number of K-Means clusters
+  segmentation_clusters: 4
+  # RFM snapshot date (YYYY-MM-DD format, defaults to today)
+  rfm_snapshot_date: null
+  # Fraud detection: lookback period in days
+  fraud_lookback_days: 90
+  # Risk factors: AML risk score thresholds
+  aml_risk_high_threshold: 75
+  aml_risk_medium_threshold: 50
+
+# Vector Index Configuration (for RAG)
+vector_index:
+  # Type: 'faiss' or 'chroma'
+  type: "faiss"
+  # Vector dimension (depends on embedding model)
+  dimension: 384
+  # Persist index to disk
+  persist: true
+  # Index path
+  path: "data/processed/credit_policy_index"
+
+# File Paths
+paths:
+  # Raw data directory
+  data_raw: "data/raw"
+  # Processed data output directory
+  data_processed: "data/processed"
+  # Vector index directory
+  vector_index: "data/processed/credit_policy_index"
+  # Logs directory
+  logs: "logs"
+  # Models directory
+  models: "models"
+  # Policy documents for RAG
+  policy_docs: "data/raw/policy_docs"
+
+# Logging Configuration
+logging:
+  level: "INFO"
+  format: "[%(asctime)s] [%(name)s] [%(levelname)s] %(message)s"
+  file: "logs/banking_ai.log"
+  max_bytes: 10485760  # 10 MB
+  backup_count: 5
+
+# API & Agent Configuration
+agent:
+  # Max iterations for agent tool use
+  max_iterations: 10
+  # Timeout for tool execution (seconds)
+  tool_timeout: 30
+  # Enable verbose logging for agent actions
+  verbose: false
+  # Enable memory (conversation history)
+  memory_enabled: true
+  # Max memory tokens
+  max_memory_tokens: 2048
+
+# Feature Engineering Settings
+feature_engineering:
+  # RFM features
+  rfm_recency_days: 365
+  rfm_frequency_bins: 5
+  rfm_monetary_bins: 5
+  # Fraud detection features
+  fraud_hour_bins: [0, 6, 12, 18, 24]
+  # Credit risk features
+  credit_age_bins: [0, 1, 2, 5, 10, 100]
+
+# Performance & Optimization
+performance:
+  # Batch size for data processing
+  batch_size: 1000
+  # Number of parallel workers
+  num_workers: 4
+  # Cache embeddings
+  cache_embeddings: true
+  # Lazy loading for large datasets
+  lazy_load: true
+
+# Compliance & Security
+compliance:
+  # Enable audit logging
+  audit_logging: true
+  # Data retention period (days)
+  data_retention_days: 2555  # ~7 years
+  # Anonymization enabled
+  anonymize_pii: true
+  # Mask customer names in outputs
+  mask_customer_names: false
