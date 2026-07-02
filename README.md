@@ -1,399 +1,588 @@
-# Banking AI Analytics Platform for UAE Banks
+# Banking AI Analytics Platform - UAE
 
-## 🏦 Project Overview
+🏦 **Production-Ready AI Platform for UAE Banking Analytics & Compliance**
 
-A **production-ready, open-source Python platform** for analytics, generative AI, and agentic automation designed for UAE-based banking institutions. This platform provides end-to-end solutions for:
-
-- **Analytics**: Customer segmentation, credit risk scoring, fraud detection, branch performance, digital channel analytics, and product profitability.
-- **Generative AI**: KYC summaries, complaint summaries, and intelligent credit advisory powered by open-source LLMs.
-- **Agentic AI**: Autonomous agents for customer support, fraud investigation, and compliance monitoring.
-
-All powered by **open-source models** (HuggingFace, LangChain, FAISS) and designed to run **locally and on cloud** (Azure preferred).
+A comprehensive, open-source artificial intelligence platform built for UAE banks to perform advanced analytics, generative AI tasks, and autonomous agent-based operations. Built with Python, HuggingFace models, and LangChain—no proprietary APIs required.
 
 ---
 
-## 🏗️ Architecture Layers
+## 🎯 Overview
+
+This platform delivers:
+
+- **📊 Advanced Analytics**: Customer segmentation, credit risk scoring, fraud detection, branch performance analysis, digital channel insights, and product profitability
+- **🤖 Generative AI**: KYC summaries, complaint summaries, and credit policy Q&A with RAG
+- **🦾 Autonomous Agents**: Customer support, fraud investigation, and compliance monitoring
+- **💾 Production Database**: 11-table schema with 8 sample customers and realistic data
+- **📈 Fully Configurable**: YAML-based settings, environment variables, and extensible architecture
+
+---
+
+## 🏗️ Architecture
 
 ```
-┌────────────────────────────────────────────┐
-│        Agentic AI Layer                    │
-│  (Customer Support, Fraud Investigation,   │
-│   Compliance Monitoring)                   │
-├────────────────────────────────────────────┤
-│        Generative AI Layer                 │
-│  (KYC Summaries, Complaint Summaries,      │
-│   Credit Advisory RAG)                     │
-├────────────────────────────────────────────┤
-│        Analytics Layer                     │
-│  (Segmentation, Risk, Fraud, Performance)  │
-├────────────────────────────────────────────┤
-│        Data & Database Layer               │
-│  (PostgreSQL/SQLite, SQLAlchemy ORM)       │
-└────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────┐
+│                    BANKING AI PLATFORM                       │
+├─────────────────────────────────────────────────────────────┤
+│                                                              │
+│  ┌──────────────────┐  ┌─────────────────┐  ┌────────────┐ │
+│  │  DATA LAYER      │  │  ANALYTICS      │  │  GEN AI    │ │
+│  ├──────────────────┤  ├─────────────────┤  ├────────────┤ │
+│  │ • PostgreSQL     │  │ • Segmentation  │  │ • KYC      │ │
+│  │ • SQLAlchemy ORM │  │ • Credit Risk   │  │ • Complaint│ │
+│  │ • 11 Core Tables │  │ • Fraud Detect  │  │ • RAG-QA   │ │
+│  │ • Seed Data      │  │ • Performance   │  │            │ │
+│  │ • Config YAML    │  │ • Digital       │  │            │ │
+│  │                  │  │ • Profitability │  │            │ │
+│  └──────────────────┘  └─────────────────┘  └────────────┘ │
+│                                                              │
+│  ┌──────────────────────────────────────────────────────┐  │
+│  │            AUTONOMOUS AGENTS (LangChain)             │  │
+│  ├──────────────────────────────────────────────────────┤  │
+│  │ • Customer Support Agent    • Fraud Investigation    │  │
+│  │ • Compliance Agent                                   │  │
+│  └──────────────────────────────────────────────────────┘  │
+│                                                              │
+└─────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 🛠️ Tech Stack
+## 📦 What's Included
 
-| Component | Technology |
-|-----------|-----------|
-| **Language** | Python 3.9+ |
-| **Database** | PostgreSQL (production) / SQLite (local dev) |
-| **ORM** | SQLAlchemy |
-| **Analytics** | Pandas, NumPy, Scikit-learn, Statsmodels |
-| **Visualization** | Matplotlib, Seaborn, Plotly |
-| **LLM Framework** | HuggingFace Transformers, LangChain |
-| **Vector DB** | FAISS, ChromaDB |
-| **Agentic AI** | LangChain Agents, LangChain Tools |
-| **Dev Tools** | Jupyter, Black, Pytest |
+### Database (11 Tables)
+1. **BRANCHES** - Bank location data
+2. **CUSTOMERS** - Customer master with UAE/GCC-specific fields
+3. **PRODUCTS** - Banking products
+4. **ACCOUNTS** - Customer accounts
+5. **TRANSACTIONS** - High-volume transaction records
+6. **LOANS** - Loan portfolio with NPL tracking
+7. **CARDS** - Card portfolio
+8. **DIGITAL_CHANNEL_EVENTS** - Digital interaction tracking
+9. **KYC_DOCUMENTS** - KYC verification documents
+10. **COMPLAINTS** - Customer complaint tracking
+11. **RISK_FACTORS** - Risk assessment data
 
----
+### Analytics Modules (6 Workflows)
+- 🎯 **Customer Segmentation**: RFM analysis + K-Means clustering → 4 segments
+- 📈 **Credit Risk Scoring**: Logistic regression → NPL prediction probability
+- 🚨 **Fraud Detection**: Isolation Forest → Suspicious transaction flags
+- 🏢 **Branch Performance**: KPI analysis → Revenue, transaction, complaint metrics
+- 📱 **Digital Channel Analytics**: Usage patterns → Device preferences, engagement scores
+- 💰 **Product Profitability**: Revenue analysis → Profitability per product
 
-## 📁 Project Structure
+### Generative AI (3 Components)
+- 📄 **KYC Summary Generator**: Flan-T5 → Professional KYC summaries
+- 💬 **Complaint Summary Generator**: BART → Summaries + resolution suggestions
+- 🎓 **Credit Advisory Assistant**: RAG with FAISS → Policy Q&A
 
-```
-banking-ai-analytics-uae/
-├── README.md                              # This file
-├── requirements.txt                       # Python dependencies
-├── .gitignore                            # Git ignore patterns
-├── .env.example                          # Environment template
-├── config/
-│   └── config.yaml                       # Configuration file
-├── data/
-│   ├── raw/                              # Raw CSV input data
-│   │   ├── customers.csv
-│   │   ├── accounts.csv
-│   │   ├── transactions.csv
-│   │   ├── loans.csv
-│   │   ├── cards.csv
-│   │   ├── branches.csv
-│   │   ├── products.csv
-│   │   ├── digital_channel_events.csv
-│   │   ├── kyc_documents.csv
-│   │   ├── complaints.csv
-│   │   └── risk_factors.csv
-│   └── processed/                        # Output data & indexes
-├── db/
-│   ├── create_tables.sql                 # Database schema (DDL)
-│   └── seed_data.sql                     # Test/demo data
-├── notebooks/
-│   └── exploration/
-│       ├── 01_data_overview.ipynb
-│       ├── 02_customer_segmentation.ipynb
-│       ├── 03_credit_risk_scoring.ipynb
-│       └── 04_fraud_detection.ipynb
-├── src/
-│   ├── __init__.py
-│   ├── db/
-│   │   ├── __init__.py
-│   │   └── connection.py                 # SQLAlchemy setup
-│   ├── analytics/
-│   │   ├── __init__.py
-│   │   ├── customer_segmentation.py      # RFM + K-Means clustering
-│   │   ├── branch_performance.py         # Branch KPIs
-│   │   ├── credit_risk_scoring.py        # NPL prediction model
-│   │   ├── fraud_detection.py            # Isolation Forest anomaly detection
-│   │   ├── digital_channel_analytics.py  # Channel usage analytics
-│   │   └── product_profitability.py      # Product profitability metrics
-│   ├── genai/
-│   │   ├── __init__.py
-│   │   ├── kyc_summary_generator.py      # KYC document summarizer
-│   │   ├── complaint_summary_generator.py# Complaint resolution summarizer
-│   │   └── credit_advisory_assistant.py  # RAG-based credit policy advisor
-│   └── agents/
-│       ├── __init__.py
-│       ├── customer_support_agent.py     # Customer service agent
-│       ├── fraud_investigation_agent.py  # Fraud investigation agent
-│       └── compliance_agent.py           # Compliance monitoring agent
-└── scripts/
-    ├── run_customer_segmentation.py
-    ├── run_branch_performance.py
-    ├── run_credit_risk_scoring.py
-    ├── run_fraud_detection.py
-    ├── run_customer_support_agent.py
-    ├── run_fraud_investigation_agent.py
-    └── run_compliance_agent.py
-```
+### Autonomous Agents (3 Agents)
+- 💼 **Customer Support Agent**: Account balance, transactions, complaints
+- 🔍 **Fraud Investigation Agent**: Suspicious transactions, risk profiles, pattern analysis
+- ⚖️ **Compliance Agent**: KYC status, AML risk, document expiry tracking
+
+### Sample Data
+- ✅ 8 realistic customers (UAE nationals, GCC nationals, expats)
+- ✅ 10 accounts with realistic balances
+- ✅ 8 loans with NPL scenarios
+- ✅ 7 credit cards
+- ✅ 20+ transactions across channels
+- ✅ Digital channel events and complaints
+- ✅ Complete KYC documents and risk assessments
 
 ---
 
 ## 🚀 Quick Start
 
-### Prerequisites
-
-- Python 3.9 or higher
-- PostgreSQL 12+ (or use SQLite for local development)
-- Git
-
-### 1. Clone the Repository
-
+### 1. Clone Repository
 ```bash
 git clone https://github.com/saisachindas/banking-ai-analytics-uae.git
 cd banking-ai-analytics-uae
 ```
 
-### 2. Create a Virtual Environment
-
+### 2. Install Dependencies
 ```bash
+# Create virtual environment
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
 
-### 3. Install Dependencies
-
-```bash
+# Install requirements
 pip install -r requirements.txt
 ```
 
+### 3. Setup Database
+```bash
+# Option A: PostgreSQL (Production)
+# Set environment variable
+export DB_URL=postgresql://user:password@localhost:5432/uae_banking
+
+# Option B: SQLite (Development - Default)
+# Uses SQLite by default: sqlite:///./uae_banking.db
+
+# Create tables and load seed data
+sqlite3 uae_banking.db < db/create_tables.sql
+sqlite3 uae_banking.db < db/seed_data.sql
+
+# Or with PostgreSQL
+psql -U user -d uae_banking -f db/create_tables.sql
+psql -U user -d uae_banking -f db/seed_data.sql
+```
+
 ### 4. Configure Environment
-
 ```bash
+# Copy environment template
 cp .env.example .env
-# Edit .env with your configuration (DB connection, HuggingFace token, etc.)
+
+# Edit .env with your settings (optional, defaults work)
+vim .env
 ```
 
-### 5. Initialize the Database
-
-For **PostgreSQL**:
+### 5. Run Your First Analysis
 ```bash
-psql -U postgres -h localhost -d uae_banking -f db/create_tables.sql
-psql -U postgres -h localhost -d uae_banking -f db/seed_data.sql
-```
+# Customer Segmentation
+python scripts/run_customer_segmentation.py
 
-For **SQLite** (local development):
-```bash
-python -c "from src.db.connection import create_all_tables; create_all_tables()"
-```
+# Credit Risk Scoring
+python scripts/run_credit_risk_scoring.py
 
-### 6. Load Sample Data (Optional)
+# Fraud Detection
+python scripts/run_fraud_detection.py
 
-Sample CSV files are provided in `data/raw/`. Load them into the database:
-
-```bash
-python -c "from src.db.connection import load_csv_to_db; load_csv_to_db('data/raw')"
+# All other analyses
+python scripts/run_*.py
 ```
 
 ---
 
-## 📊 Running Analytics Workflows
+## 📊 Running Analytics
 
-### Customer Segmentation (RFM + K-Means)
-
+### Customer Segmentation
 ```bash
 python scripts/run_customer_segmentation.py
-# Output: data/processed/customer_segments.csv
 ```
+**Output**: `data/processed/customer_segments.csv`
+- RFM scores for each customer
+- Cluster assignments (4 segments)
+- Segment characteristics
 
-### Credit Risk Scoring (Logistic Regression)
-
+### Credit Risk Scoring
 ```bash
 python scripts/run_credit_risk_scoring.py
-# Output: Credit risk model + predictions
 ```
+**Output**: 
+- `models/credit_risk_model.pkl` (trained model)
+- `models/credit_risk_scaler.pkl` (feature scaler)
+- Metrics: Training accuracy, test accuracy, ROC-AUC
 
-### Fraud Detection (Isolation Forest)
-
+### Fraud Detection
 ```bash
 python scripts/run_fraud_detection.py
-# Output: data/processed/fraud_alerts.csv
 ```
+**Output**: `data/processed/fraud_alerts.csv`
+- Flagged suspicious transactions
+- Anomaly scores
+- Fraud indicators (night transactions, weekend, large amounts)
 
-### Branch Performance Analysis
-
+### Branch Performance
 ```bash
 python scripts/run_branch_performance.py
-# Output: data/processed/branch_performance.html (interactive dashboard)
 ```
+**Output**: `data/processed/branch_performance.csv`
+- Revenue per employee
+- Transaction volume
+- Customer satisfaction (complaint resolution)
+- Loan-to-deposit ratio
 
 ### Digital Channel Analytics
-
 ```bash
 python scripts/run_digital_channel_analytics.py
-# Output: data/processed/digital_channel_kpis.csv
 ```
+**Output**: `data/processed/digital_channel_kpis.csv`
+- Channel usage patterns
+- Device preferences
+- Engagement scores
+- Session metrics
 
 ### Product Profitability
-
 ```bash
 python scripts/run_product_profitability.py
-# Output: data/processed/product_profitability_report.csv
 ```
+**Output**: `data/processed/product_profitability_report.csv`
+- Annual revenue by product
+- Revenue per account
+- Interest and fee income
+- Profitability rankings
 
 ---
 
-## 🤖 Running Generative AI Pipelines
+## 🤖 Using Generative AI
 
-### KYC Summary Generator
+### KYC Summary
+```python
+from src.genai.kyc_summary_generator import generate_kyc_summary
 
-```bash
-python -c "from src.genai.kyc_summary_generator import main; main(customer_id=1)"
+# Generate professional KYC summary
+summary = generate_kyc_summary(customer_id=1)
+print(summary['kyc_summary'])
+print(summary['recommendations'])
 ```
 
-### Complaint Summary Generator
+### Complaint Summaries
+```python
+from src.genai.complaint_summary_generator import generate_complaint_summaries
 
-```bash
+# Generate summaries for open complaints
 python scripts/run_complaint_summary_generator.py
-# Output: data/processed/complaint_summaries.csv
 ```
 
-### Credit Advisory Assistant (RAG)
+### Credit Policy Q&A (RAG)
+```python
+from src.genai.credit_advisory_assistant import CreditPolicyAdvisor
 
-```bash
-python -c "from src.genai.credit_advisory_assistant import main; main()"
-# Asks: 'What are the credit limits for UAE nationals?'
+advisor = CreditPolicyAdvisor()
+answer = advisor.answer_question("What are the credit limits for UAE nationals?")
+print(answer)
 ```
 
 ---
 
-## 🤝 Running Agentic AI Agents
+## 🦾 Using Autonomous Agents
 
 ### Customer Support Agent
-
 ```bash
 python scripts/run_customer_support_agent.py
-# Example: Agent retrieves account balance, recent transactions, raises complaints
 ```
+
+**Capabilities**:
+- Get account balance
+- Retrieve recent transactions
+- Raise complaints
+- Check card status
 
 ### Fraud Investigation Agent
-
 ```bash
 python scripts/run_fraud_investigation_agent.py
-# Example: Agent investigates flagged transactions and generates compliance report
 ```
+
+**Capabilities**:
+- Find flagged transactions
+- Get customer risk profiles
+- Analyze transaction patterns
+- Flag accounts for review
 
 ### Compliance Agent
-
 ```bash
 python scripts/run_compliance_agent.py
-# Example: Agent monitors KYC status, AML risk, and document expiry
 ```
+
+**Capabilities**:
+- Check KYC status
+- Get AML risk assessment
+- List expiring documents
+- Generate compliance dashboard
 
 ---
 
-## 📖 Documentation
+## 🔧 Development
 
-Each module includes detailed docstrings. For example:
-
-```python
-from src.analytics.customer_segmentation import compute_rfm_segments
-
-help(compute_rfm_segments)
+### Project Structure
+```
+banking-ai-analytics-uae/
+├── src/
+│   ├── db/                      # Database layer
+│   │   ├── connection.py        # SQLAlchemy setup
+│   │   └── __init__.py
+│   ├── analytics/               # Analytics module
+│   │   ├── customer_segmentation.py
+│   │   ├── credit_risk_scoring.py
+│   │   ├── fraud_detection.py
+│   │   ├── branch_performance.py
+│   │   ├── digital_channel_analytics.py
+│   │   ├── product_profitability.py
+│   │   └── __init__.py
+│   ├── genai/                   # Generative AI module
+│   │   ├── kyc_summary_generator.py
+│   │   ├── complaint_summary_generator.py
+│   │   ├── credit_advisory_assistant.py
+│   │   └── __init__.py
+│   ├── agents/                  # Agentic AI module
+│   │   ├── customer_support_agent.py
+│   │   ├── fraud_investigation_agent.py
+│   │   ├── compliance_agent.py
+│   │   └── __init__.py
+│   └── __init__.py
+├── db/
+│   ├── create_tables.sql        # DDL for 11 tables
+│   └── seed_data.sql            # Sample data
+├── scripts/                     # Executable run scripts
+│   ├── run_customer_segmentation.py
+│   ├── run_credit_risk_scoring.py
+│   ├── run_fraud_detection.py
+│   ├── run_branch_performance.py
+│   ├── run_digital_channel_analytics.py
+│   ├── run_product_profitability.py
+│   ├── run_complaint_summary_generator.py
+│   ├── run_customer_support_agent.py
+│   ├── run_fraud_investigation_agent.py
+│   └── run_compliance_agent.py
+├── config/
+│   └── config.yaml              # Configuration file
+├── data/
+│   ├── raw/                     # Raw data
+│   │   └── policy_docs/         # Sample policy documents
+│   └── processed/               # Processed results
+├── models/                      # Trained models
+├── logs/                        # Log files
+├── requirements.txt             # Python dependencies
+├── .env.example                 # Environment template
+├── README.md                    # This file
+├── CONTRIBUTING.md              # Contributing guidelines
+├── CHANGELOG.md                 # Version history
+├── LICENSE                      # MIT License
+└── .gitignore                   # Git ignore rules
 ```
 
-### Key Modules
+### Code Standards
+- **Style**: PEP 8 (use `black` for formatting)
+- **Linting**: `flake8`
+- **Type Hints**: Use throughout
+- **Docstrings**: Google style
+- **Testing**: `pytest` for unit tests
 
-| Module | Purpose |
-|--------|---------|
-| `src.db.connection` | Database connectivity, session management |
-| `src.analytics.*` | Customer and risk analytics |
-| `src.genai.*` | LLM-powered summaries and RAG pipelines |
-| `src.agents.*` | Autonomous agents with tools |
+### Contributing
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
 ---
 
-## ⚙️ Configuration
+## 📋 System Requirements
 
-### `config/config.yaml`
+- **Python**: 3.9 or higher
+- **Database**: PostgreSQL 12+ (production) or SQLite 3.0+ (development)
+- **RAM**: 8GB minimum (16GB recommended for ML models)
+- **Storage**: 10GB for models and data
+- **GPU**: Optional (for faster inference on large datasets)
+
+---
+
+## 🔑 Configuration
+
+All settings are in `config/config.yaml`. Key options:
 
 ```yaml
 # Database
 database:
-  url: "postgresql://postgres:password@localhost:5432/uae_banking"
-  echo: false
+  url: "postgresql://user:pass@localhost/uae_banking"
+  pool_size: 10
 
-# LLM Models (HuggingFace)
+# Models
 models:
   text_generation: "google/flan-t5-large"
   embedding: "sentence-transformers/all-MiniLM-L6-v2"
+  device: "cpu"  # or "cuda"
 
-# Analytics Thresholds
+# Analytics
 analytics:
-  fraud_isolation_forest_contamination: 0.05
-  credit_risk_npl_threshold: 0.5
+  fraud_contamination: 0.05
   segmentation_clusters: 4
-
-# Paths
-paths:
-  data_raw: "data/raw"
-  data_processed: "data/processed"
-  vector_index: "data/processed/credit_policy_index"
+  credit_risk_npl_threshold: 0.5
 ```
 
 ---
 
-## 🔒 Security & Privacy
+## 📚 Documentation
 
-- **No hardcoded credentials**: Use `.env` for sensitive data.
-- **Open-source models only**: No proprietary API keys required by default.
-- **Data anonymization**: Seed data uses realistic but synthetic information.
-- **Audit logging**: All agent actions are logged for compliance.
+Full documentation for each module:
+
+- **Database**: Docstrings in `src/db/connection.py`
+- **Analytics**: Docstrings in `src/analytics/*.py`
+- **GenAI**: Docstrings in `src/genai/*.py`
+- **Agents**: Docstrings in `src/agents/*.py`
+
+All functions include usage examples in their docstrings.
 
 ---
 
-## 🧪 Testing
+## 🎯 Use Cases
 
-Run unit tests:
+### Risk Management
+- Identify high-risk customers with AML scoring
+- Monitor PEP (Politically Exposed Persons) customers
+- Track KYC document expiration
+- Predict NPL (Non-Performing Loans)
 
+### Revenue Optimization
+- Segment customers for targeted marketing
+- Analyze product profitability
+- Optimize branch operations
+- Improve digital channel engagement
+
+### Compliance
+- Monitor regulatory requirements
+- Generate compliance reports
+- Track document verification
+- Manage complaint resolution
+
+### Operations
+- Detect fraudulent transactions in real-time
+- Automate customer support
+- Analyze branch performance
+- Optimize product offerings
+
+---
+
+## 🔄 Workflow Examples
+
+### Complete Risk Assessment
+```python
+from src.analytics.credit_risk_scoring import build_credit_risk_model
+from src.analytics.fraud_detection import detect_fraud_anomalies
+from src.agents.compliance_agent import ComplianceAgent
+
+# 1. Train credit risk model
+model, scaler, metrics = build_credit_risk_model()
+
+# 2. Detect fraud
+alerts = detect_fraud_anomalies()
+
+# 3. Compliance review
+agent = ComplianceAgent()
+report = agent.generate_report()
+```
+
+### Customer Insights Pipeline
+```python
+from src.analytics.customer_segmentation import compute_rfm_segments
+from src.analytics.digital_channel_analytics import analyze_digital_channels
+from src.genai.kyc_summary_generator import generate_kyc_summary
+
+# 1. Segment customers
+segments = compute_rfm_segments()
+
+# 2. Analyze digital behavior
+channel_data = analyze_digital_channels()
+
+# 3. Generate KYC summaries
+for customer_id in range(1, 9):
+    summary = generate_kyc_summary(customer_id)
+```
+
+---
+
+## 📊 Sample Data
+
+### Customers
+- **Ahmed Al Mansouri** (Premium, PEP flag)
+- **Fatima Al Noor** (Standard)
+- **Mohammed Al Suwaidi** (Premium, PEP)
+- **Layla Al Khaleej** (GCC National)
+- **Abdullah Al Mazrouei** (Corporate)
+- **Noor Al Shamsi** (Mass Market)
+- **Khaled Al Mansoori** (Premium)
+- **Zainab Al Kaabi** (Dormant)
+
+### Transactions
+- Salary deposits
+- Bill payments (DEWA)
+- Shopping (Carrefour, Lulu)
+- Business transfers
+- Loan payments
+- Cash withdrawals (some fraudulent)
+
+### Loans
+- Personal loans
+- Home loans (mortgages)
+- Auto loans
+- Business loans
+- Some with NPL flags
+
+---
+
+## 🐛 Troubleshooting
+
+### Database Connection Issues
 ```bash
-pytest tests/ -v
+# Test connection
+python -c "from src.db.connection import test_connection; test_connection()"
 ```
 
-Test coverage for:
-- Database connectivity
-- RFM segmentation logic
-- Credit risk model training
-- Fraud detection pipeline
-- Agent tool execution
+### Missing Dependencies
+```bash
+# Reinstall requirements
+pip install --force-reinstall -r requirements.txt
+```
+
+### Model Download Errors
+```bash
+# Pre-download HuggingFace models
+python -c "from transformers import AutoModel; AutoModel.from_pretrained('google/flan-t5-base')"
+```
 
 ---
 
-## 📈 Extensibility & Future Work
+## 📈 Performance Tips
 
-This platform is designed to grow with your bank:
-
-1. **Core System Integration**: Connect to your bank's core system (Temenos, Finacle, etc.)
-2. **Real-time Streaming**: Add Apache Kafka for real-time transaction processing
-3. **Advanced Models**: Integrate XGBoost, LightGBM, and deep learning models
-4. **Cloud Deployment**: Azure Container Registry, AKS, Logic Apps for orchestration
-5. **CI/CD**: GitHub Actions for automated testing and deployment
-6. **Dashboards**: Grafana/Power BI for real-time monitoring
-7. **Multi-tenant Support**: Isolate data by bank subsidiary or geography
+1. **Use PostgreSQL** for production (SQLite is for development only)
+2. **Enable GPU** if available for model inference
+3. **Batch processing** for large datasets
+4. **Index frequently queried columns** in database
+5. **Cache embeddings** for RAG system
+6. **Use connection pooling** for database
 
 ---
 
-## 📞 Support & Contribution
+## 🔐 Security Notes
 
-This is an **open-source project** designed for UAE banking innovation. Contributions, issues, and feature requests are welcome!
-
-### Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+- **Never commit `.env`** with real credentials
+- **Use strong database passwords** in production
+- **Enable SSL** for PostgreSQL connections
+- **Mask PII** in logs and outputs
+- **Validate all inputs** to database queries
+- **Use parameterized queries** (SQLAlchemy does this by default)
 
 ---
 
-## 📄 License
+## 📞 Support
 
-This project is licensed under the **MIT License**. See LICENSE file for details.
-
----
-
-## 🌟 Acknowledgments
-
-- **HuggingFace**: Open-source transformer models
-- **LangChain**: Framework for building with LLMs
-- **Scikit-learn**: Machine learning algorithms
-- **FAISS**: Vector similarity search
-- **SQLAlchemy**: Python SQL toolkit
+- **Issues**: GitHub Issues
+- **Discussions**: GitHub Discussions
+- **Contributing**: See [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ---
 
-## 📧 Contact
+## 📜 License
 
-For questions or support, please open an issue on GitHub.
+MIT License - See [LICENSE](LICENSE) for details.
 
-**Happy banking with AI! 🚀**
+Copyright (c) 2024 Banking AI Analytics Contributors
+
+---
+
+## 🚀 Roadmap
+
+### v1.1.0 (Q3 2024)
+- Real-time streaming analytics (Kafka)
+- Advanced models (XGBoost, LightGBM)
+- REST API (FastAPI)
+- Web dashboard (Streamlit)
+
+### v1.2.0 (Q4 2024)
+- Cloud deployment (Azure, AWS)
+- Multi-tenant support
+- CI/CD pipelines
+- Performance optimization
+
+### v2.0.0 (H1 2025)
+- Deep learning models
+- Multi-language support
+- Enhanced RAG capabilities
+- Advanced reporting
+
+---
+
+## ⭐ Star Us!
+
+If you find this useful, please ⭐ the repository!
+
+---
+
+**Built with ❤️ for UAE Banks | Open Source | Production Ready**
