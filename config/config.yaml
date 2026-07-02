@@ -1,117 +1,163 @@
-# Banking AI Analytics Platform Configuration
-# This file defines all runtime settings for the platform
+# Banking AI Analytics Platform - Configuration
+# YAML configuration file for all platform settings
 
-# Database Configuration
+platform:
+  name: "Banking AI Analytics Platform - UAE"
+  version: "1.0.0"
+  environment: "development"
+  debug: true
+
 database:
-  # Default to PostgreSQL; set to sqlite:///./uae_banking.db for local development
-  url: "postgresql://postgres:password@localhost:5432/uae_banking"
-  echo: false  # Set to true for SQL query logging
+  # Connection URL
+  # PostgreSQL: postgresql://user:password@localhost:5432/uae_banking
+  # SQLite: sqlite:///./uae_banking.db
+  url: "sqlite:///./uae_banking.db"
+  
+  # Connection pooling
   pool_size: 10
   max_overflow: 20
+  pool_recycle: 3600
+  
+  # Echo SQL statements (for debugging)
+  echo: false
 
-# Generative AI & LLM Models (HuggingFace)
 models:
-  # Text generation model for summaries
-  text_generation: "google/flan-t5-large"
-  # Embedding model for RAG vector search
-  embedding: "sentence-transformers/all-MiniLM-L6-v2"
-  # Device for inference: 'cuda' or 'cpu'
+  # Text generation model for summaries and responses
+  text_generation:
+    name: "google/flan-t5-base"
+    max_length: 150
+    temperature: 0.1
+  
+  # Embeddings model for RAG
+  embeddings:
+    name: "sentence-transformers/all-MiniLM-L6-v2"
+    cache_folder: "models/embeddings"
+  
+  # Summarization model
+  summarization:
+    name: "facebook/bart-large-cnn"
+    max_length: 150
+  
+  # Device for inference (cpu or cuda)
   device: "cpu"
-  # Model precision: 'float32', 'float16', 'int8'
-  precision: "float32"
 
-# Analytics Thresholds & Parameters
 analytics:
-  # Fraud detection: Isolation Forest contamination parameter
-  fraud_isolation_forest_contamination: 0.05
-  # Credit risk: NPL prediction threshold
-  credit_risk_npl_threshold: 0.5
-  # Customer segmentation: number of K-Means clusters
-  segmentation_clusters: 4
-  # RFM snapshot date (YYYY-MM-DD format, defaults to today)
-  rfm_snapshot_date: null
-  # Fraud detection: lookback period in days
-  fraud_lookback_days: 90
-  # Risk factors: AML risk score thresholds
-  aml_risk_high_threshold: 75
-  aml_risk_medium_threshold: 50
+  # Customer Segmentation
+  segmentation:
+    n_clusters: 4
+    random_state: 42
+    output_path: "data/processed/customer_segments.csv"
+  
+  # Credit Risk Scoring
+  credit_risk:
+    test_size: 0.2
+    npl_threshold: 0.5
+    model_path: "models/credit_risk_model.pkl"
+    scaler_path: "models/credit_risk_scaler.pkl"
+  
+  # Fraud Detection
+  fraud_detection:
+    lookback_days: 90
+    contamination: 0.05
+    n_estimators: 100
+    random_state: 42
+    output_path: "data/processed/fraud_alerts.csv"
+  
+  # Branch Performance
+  branch_performance:
+    output_path: "data/processed/branch_performance.csv"
+  
+  # Digital Channel Analytics
+  digital_channels:
+    output_path: "data/processed/digital_channel_kpis.csv"
+  
+  # Product Profitability
+  product_profitability:
+    output_path: "data/processed/product_profitability_report.csv"
 
-# Vector Index Configuration (for RAG)
-vector_index:
-  # Type: 'faiss' or 'chroma'
-  type: "faiss"
-  # Vector dimension (depends on embedding model)
-  dimension: 384
-  # Persist index to disk
-  persist: true
-  # Index path
-  path: "data/processed/credit_policy_index"
+genai:
+  # KYC Summary Generator
+  kyc_summary:
+    model: "google/flan-t5-large"
+    max_length: 150
+  
+  # Complaint Summary Generator
+  complaint_summary:
+    model: "facebook/bart-large-cnn"
+    max_length: 150
+  
+  # Credit Advisory RAG
+  credit_advisory:
+    embedding_model: "sentence-transformers/all-MiniLM-L6-v2"
+    policy_docs_path: "data/raw/policy_docs"
+    index_path: "data/processed/credit_policy_index"
+    retriever_k: 3
 
-# File Paths
-paths:
-  # Raw data directory
-  data_raw: "data/raw"
-  # Processed data output directory
-  data_processed: "data/processed"
-  # Vector index directory
-  vector_index: "data/processed/credit_policy_index"
-  # Logs directory
-  logs: "logs"
-  # Models directory
-  models: "models"
-  # Policy documents for RAG
-  policy_docs: "data/raw/policy_docs"
+agents:
+  # LangChain agent configuration
+  agent_type: "zero_shot_react"
+  max_iterations: 5
+  verbose: true
+  
+  # Customer Support Agent
+  customer_support:
+    enabled: true
+    tools:
+      - "get_account_balance"
+      - "get_recent_transactions"
+      - "raise_complaint"
+      - "check_card_status"
+  
+  # Fraud Investigation Agent
+  fraud_investigation:
+    enabled: true
+    tools:
+      - "get_flagged_transactions"
+      - "get_customer_risk_profile"
+      - "get_transaction_pattern"
+      - "flag_account_for_review"
+  
+  # Compliance Agent
+  compliance:
+    enabled: true
+    tools:
+      - "get_kyc_status"
+      - "get_aml_risk"
+      - "list_expiring_documents"
+      - "get_compliance_dashboard"
 
-# Logging Configuration
 logging:
   level: "INFO"
   format: "[%(asctime)s] [%(name)s] [%(levelname)s] %(message)s"
   file: "logs/banking_ai.log"
-  max_bytes: 10485760  # 10 MB
+  max_bytes: 10485760  # 10MB
   backup_count: 5
 
-# API & Agent Configuration
-agent:
-  # Max iterations for agent tool use
-  max_iterations: 10
-  # Timeout for tool execution (seconds)
-  tool_timeout: 30
-  # Enable verbose logging for agent actions
-  verbose: false
-  # Enable memory (conversation history)
-  memory_enabled: true
-  # Max memory tokens
-  max_memory_tokens: 2048
+paths:
+  data_raw: "data/raw"
+  data_processed: "data/processed"
+  models: "models"
+  logs: "logs"
+  config: "config"
 
-# Feature Engineering Settings
-feature_engineering:
-  # RFM features
-  rfm_recency_days: 365
-  rfm_frequency_bins: 5
-  rfm_monetary_bins: 5
-  # Fraud detection features
-  fraud_hour_bins: [0, 6, 12, 18, 24]
-  # Credit risk features
-  credit_age_bins: [0, 1, 2, 5, 10, 100]
-
-# Performance & Optimization
-performance:
-  # Batch size for data processing
-  batch_size: 1000
-  # Number of parallel workers
-  num_workers: 4
-  # Cache embeddings
-  cache_embeddings: true
-  # Lazy loading for large datasets
-  lazy_load: true
-
-# Compliance & Security
-compliance:
-  # Enable audit logging
+security:
+  # Database encryption
+  encrypt_sensitive_fields: true
+  
+  # Audit logging
   audit_logging: true
-  # Data retention period (days)
-  data_retention_days: 2555  # ~7 years
-  # Anonymization enabled
-  anonymize_pii: true
-  # Mask customer names in outputs
-  mask_customer_names: false
+  audit_log_path: "logs/audit.log"
+  
+  # PII masking
+  mask_pii_in_logs: true
+
+performance:
+  # Batch processing
+  batch_size: 1000
+  
+  # Connection pooling
+  use_connection_pool: true
+  
+  # Caching
+  enable_cache: true
+  cache_ttl: 3600  # seconds
